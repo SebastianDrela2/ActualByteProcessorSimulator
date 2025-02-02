@@ -1,6 +1,9 @@
-﻿using ActualProcessorSim.Assembly;
+﻿using System.Collections.Immutable;
+using ActualProcessorSim.Assembly;
 using ActualProcessorSim.Memory;
+using ActualProcessorSim.MemorySection;
 using ActualProcessorSim.PhysicalComponent;
+using ActualProcessorSim.Runtime;
 
 namespace ActualProcessorSim;
 
@@ -12,11 +15,19 @@ internal class Program
         var memoryBuilder = new MemoryBuilder();
 		assembler.Read();
 
-		var bytes = assembler.BytesBuilder.Bytes;
-        var processedMemory = memoryBuilder.Build(bytes);
-        memoryBuilder.Link(assembler.LineInformations, processedMemory);
+		var memory = new RamMemory
+		{
+			Content = assembler.BytesBuilder.Bytes
+		};
+		
+        memoryBuilder.Link(assembler.LineInformations!, memory);
 
-        var processor = new Processor(processedMemory);
-        processor.Execute();
+		var processor = new Processor();
+        var computer = new Computer()
+		{
+			Processor = processor,
+			Memory = memory
+		};
+        computer.Execute();
 	}
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using ActualProcessorSim.Intefacess;
@@ -8,15 +8,17 @@ using ProcessorSim.Instructions;
 
 namespace ActualProcessorSim.Assembly;
 
-public class BytesBuilder(ImmutableArray<byte> bytes)
+public class BytesBuilderList(ImmutableArray<byte> bytes) : IReadOnlyList<byte>
 {
     public ImmutableArray<byte>.Builder Bytes { get; } = bytes.ToBuilder();
     public int Position => Bytes.Count;
 
+    public int Count => throw new NotImplementedException();
+
     public byte this[int index] => Bytes[index];
     public ReadOnlySubView<byte> this[Range range] => Bytes.SubList(range);
 
-    public BytesBuilder()
+    public BytesBuilderList()
         : this([]) { }
 
     public int Write(Instruction instruction, LineInformation lineInformation)
@@ -84,6 +86,9 @@ public class BytesBuilder(ImmutableArray<byte> bytes)
     public int Write(RegisterCodeType value) => Write((byte)value);
     public int Write(InstructionContext value) => Write((byte)value);
     public int WriteLabel(string label) => label.Sum(c => Write((byte)c));
+
+    public IEnumerator<byte> GetEnumerator() => Bytes.GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => Bytes.GetEnumerator();
 
     public bool TryParse(ReadOnlySpan<char> register, out RegisterCodeType value) => EnumParser.TryParse(register, out value);
     public class InvalidSyntaxException(string message) : Exception(message) 

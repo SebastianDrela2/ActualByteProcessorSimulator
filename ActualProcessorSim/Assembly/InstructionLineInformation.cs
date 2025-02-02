@@ -3,14 +3,14 @@ public struct InstructionLineInformation
 {
     public LineInformation LineInformation { get; }
     public string Instruction { get; }
-    public int Bytes { get; }
+    public int BytesLength { get; }
     public int Position { get; }
 
-    public InstructionLineInformation(LineInformation lineInformation, string instruction, int bytes, int position)
+    public InstructionLineInformation(LineInformation lineInformation, string instruction, int bytesLength, int position)
     {
         LineInformation = lineInformation;
         Instruction = instruction;
-        Bytes = bytes;
+        BytesLength = bytesLength;
         Position = position;
     }
 }

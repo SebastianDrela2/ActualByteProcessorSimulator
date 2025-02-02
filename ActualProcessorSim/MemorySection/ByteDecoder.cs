@@ -1,7 +1,7 @@
 ﻿using ActualProcessorSim.PhysicalComponent;
 using ProcessorSim.Instructions;
 
-namespace ActualProcessorSim.Memory;
+namespace ActualProcessorSim.MemorySection;
 public class ByteDecoder(Processor processor)
 {
     public Register DecodeRegister(byte chunk)

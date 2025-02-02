@@ -7,9 +7,9 @@ public class Assembler
 	private const string InstructionsPath = "ActualProcessorSim.InstructionsToExecute.txt";
 
 	private readonly InstructionLineResolver _instructionLineResolver = new();
-	public readonly BytesBuilder BytesBuilder = new();
+	public readonly BytesBuilderList BytesBuilder = new();
 
-    public List<InstructionLineInformation> LineInformations;
+    public List<InstructionLineInformation>? LineInformations;
 
 
 	public void Read()
@@ -75,7 +75,7 @@ public class Assembler
         })
         .ToDictionary(selector => selector.Name, selector => selector.Index);
         
-        instructions.RemoveAll(x => x.Contains(':'));
+        instructions.RemoveAll(instructions => instructions[instructions.Length - 1] == ':');
         
         var updatedInstructions = instructions
         .Select(instruction =>
