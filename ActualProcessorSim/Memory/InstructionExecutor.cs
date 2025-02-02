@@ -54,7 +54,7 @@ public class InstructionExecutor(Processor processor)
     private ExecuteInformation ExecuteLs(byte[] bytes) => HandleArithmeticOperation(bytes, (reg, val) => reg.Value <<= val);
     private ExecuteInformation ExecuteRs(byte[] bytes) => HandleArithmeticOperation(bytes, (reg, val) => reg.Value >>= val);
 
-    private ExecuteInformation ExecuteBranch(byte[] bytes)
+    private ExecuteInformation ExecuteBranch(byte[] bytes, ProgramStatus? expected)
     {
         var contextSwitch = (InstructionContext)bytes[2];
 
@@ -63,17 +63,22 @@ public class InstructionExecutor(Processor processor)
             return InvalidContextResult(contextSwitch);
         }
 
+        if (expected is not null && processor.CurrentProgramStatus.Value != (byte)expected)
+        {
+            return SuccessResult();
+        }
+
         var value = _byteDecoder.DecodeValue(bytes[1]);
         processor.ProgramCounter.Value = value;
 
         return SuccessJumpedPerformedResult();
     }
 
-    private ExecuteInformation ExecuteBla(byte[] bytes) => ExecuteBranch(bytes);
-    private ExecuteInformation ExecuteBge(byte[] bytes) => ExecuteBranch(bytes);
-    private ExecuteInformation ExecuteBgt(byte[] bytes) => ExecuteBranch(bytes);
-    private ExecuteInformation ExecuteBle(byte[] bytes) => ExecuteBranch(bytes);
-    private ExecuteInformation ExecuteBlt(byte[] bytes) => ExecuteBranch(bytes);
+    private ExecuteInformation ExecuteBla(byte[] bytes) => ExecuteBranch(bytes, null);
+    private ExecuteInformation ExecuteBge(byte[] bytes) => ExecuteBranch(bytes, ProgramStatus.GreaterOrEqual);
+    private ExecuteInformation ExecuteBgt(byte[] bytes) => ExecuteBranch(bytes, ProgramStatus.Greater);
+    private ExecuteInformation ExecuteBle(byte[] bytes) => ExecuteBranch(bytes, ProgramStatus.LessOrEqual);
+    private ExecuteInformation ExecuteBlt(byte[] bytes) => ExecuteBranch(bytes, ProgramStatus.Less);
 
 
     private ExecuteInformation ExecuteMov(byte[] bytes)
