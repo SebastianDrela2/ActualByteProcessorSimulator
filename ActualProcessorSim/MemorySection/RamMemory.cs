@@ -8,7 +8,11 @@ public class RamMemory
 
     public byte[] Content;
 
+    public int Count => RamLength;
+
     public byte this[int index] => Content[index];
+
+    public ReadOnlyMemory<byte> Memory => Content.AsMemory();
 
     public RamMemory(BytesBuilder builder)
     {

@@ -15,11 +15,11 @@ public class MemoryBuilder
         {OpCodeType.LS, 4},
         {OpCodeType.RS, 4},
         {OpCodeType.EXIT, 2},
-        {OpCodeType.BLA, 3},
-        {OpCodeType.BGE, 3},
-        {OpCodeType.BGT, 3},
-        {OpCodeType.BLE, 3},
-        {OpCodeType.BLT, 3},
+        {OpCodeType.BLA, 7},
+        {OpCodeType.BGE, 7},
+        {OpCodeType.BGT, 7},
+        {OpCodeType.BLE, 7},
+        {OpCodeType.BLT, 7},
         {OpCodeType.END, 2},
         {OpCodeType.CMP, 4},
         {OpCodeType.SWI, 4 },
@@ -53,8 +53,14 @@ public class MemoryBuilder
             var jmpArgumentPosition = lineInformation.Position + 1;
 
             var jmpLineInformation = lineInformations[parsedJumpIndex];
-            var jmpPosition = jmpLineInformation.Position;
-            memory.Content[jmpArgumentPosition] = (byte)jmpPosition;
+            var jmpPositionBytes = BitConverter.GetBytes(jmpLineInformation.Position);
+
+            foreach(var jmpByte in jmpPositionBytes)
+            {
+                memory.Content[jmpArgumentPosition] = jmpByte;
+
+                jmpArgumentPosition++;
+            }
         }
     }
 

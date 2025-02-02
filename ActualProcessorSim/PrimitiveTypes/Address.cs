@@ -8,9 +8,7 @@ public struct Address
     {
         Value = value;
     }
-
-    public static implicit operator byte(Address address) => (byte)address.Value;
-
+    
     public override string ToString()
     {
         return $"{Value:X2}";

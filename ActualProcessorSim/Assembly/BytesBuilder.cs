@@ -62,9 +62,16 @@ public class BytesBuilder(ImmutableArray<byte> bytes) : IReadOnlyList<byte>
     }
     public int TryWriteAddressValue(ReadOnlySpan<char> argText)
     {
-        if (!byte.TryParse(argText, out byte parsed)) throw InvalidSyntax($"""Invalid syntax - unable to parse {argText} as byte""");
-        return Write(parsed);
+        if (!int.TryParse(argText, out int parsed)) throw InvalidSyntax($"""Invalid syntax - unable to parse {argText} as byte""");
+        var bytes = BitConverter.GetBytes(parsed);
+        var result = 0;
 
+        foreach(var chunk in bytes)
+        {
+           result += Write(chunk);
+        }
+
+        return result;
     }
     private InstructionContext GetInstructionContext(Instruction instruction, LineInformation lineInformation) => (instruction, lineInformation) switch
     {

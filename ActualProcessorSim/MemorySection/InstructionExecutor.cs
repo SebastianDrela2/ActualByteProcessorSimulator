@@ -56,7 +56,7 @@ public class InstructionExecutor(Computer computer)
 
     private ExecuteInformation ExecuteBranch(ProgramStatus? expected)
     {
-        var contextSwitch = (InstructionContext)_bytes[2];
+        var contextSwitch = (InstructionContext)_bytes[5];
 
         if (contextSwitch is not InstructionContext.ControlFlow)
         {
@@ -68,8 +68,9 @@ public class InstructionExecutor(Computer computer)
             return SuccessResult();
         }
 
-        var value = _byteDecoder.DecodeValue(_bytes[1]);
+        var value = _byteDecoder.DecodeValues(_bytes[1..5]);
         computer.Processor.ProgramCounter.Value = value;
+
 
         return SuccessJumpedPerformedResult();
     }
@@ -137,9 +138,9 @@ public class InstructionExecutor(Computer computer)
         return SuccessResult();
     }
 
-    private void UpdateProgramStatus(byte a, byte b) => computer.Processor.CurrentProgramStatus.Value = (byte)GetProgramStatus(a, b);
+    private void UpdateProgramStatus(int a, int b) => computer.Processor.CurrentProgramStatus.Value = (byte)GetProgramStatus(a, b);
 
-    private ProgramStatus GetProgramStatus(byte value1, byte value2)
+    private ProgramStatus GetProgramStatus(int value1, int value2)
     {
         return (value1, value2) switch
         {
@@ -184,4 +185,14 @@ public class InstructionExecutor(Computer computer)
 
     private static ExecuteInformation InvalidContextResult(InstructionContext context) =>
         new ExecuteInformation(ExecuteStatus.Failure, new ArgumentException($"Invalid context switch: {context}"));
+
+    // private void Push(byte chunk)
+    // {
+    //     computer.Memory[computer.Processor.]
+    // }
+
+    // private void Pop()
+    // {
+
+    // }
 }

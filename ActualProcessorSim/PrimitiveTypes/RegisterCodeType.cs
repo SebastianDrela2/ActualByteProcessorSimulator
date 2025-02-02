@@ -12,5 +12,6 @@ public enum RegisterCodeType : byte
     R7,
     LR,
     CPSR,
-    PC
+    PC,
+    SP,
 }

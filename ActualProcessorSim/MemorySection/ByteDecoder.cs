@@ -1,4 +1,5 @@
-﻿using ActualProcessorSim.PhysicalComponent;
+﻿using System.Buffers.Binary;
+using ActualProcessorSim.PhysicalComponent;
 using ProcessorSim.Instructions;
 
 namespace ActualProcessorSim.MemorySection;
@@ -13,4 +14,11 @@ public class ByteDecoder(Processor processor)
     }
 
     public byte DecodeValue(byte chunk) => chunk;
+
+    public int DecodeValues(ReadOnlyMemory<byte> bytes)
+    {
+        BinaryPrimitives.TryReadInt32LittleEndian(bytes.Span, out var result);
+
+        return result;
+    }
 }

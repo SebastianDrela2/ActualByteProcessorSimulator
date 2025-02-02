@@ -48,6 +48,6 @@ public class Computer()
         }
 
         var bytesText = string.Join(" ", displayBytes.Select(@byte => $"{@byte:X2}"));
-        Console.WriteLine($"{Processor.ProgramCounter.Value:X8} |{bytesText,12}");
+        Console.WriteLine($"{Processor.ProgramCounter.Value:X8} |{bytesText,16}");
     }
 }

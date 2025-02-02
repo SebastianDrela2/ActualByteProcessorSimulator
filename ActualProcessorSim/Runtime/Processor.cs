@@ -21,20 +21,21 @@ namespace ActualProcessorSim.PhysicalComponent
             for (var index = 0; index < 8; index++)
             {
                 var registerCodeType = Enum.Parse<RegisterCodeType>($"R{index}");
-                Registers.Add(new Register(registerCodeType, 0));
+                Registers.Add(new Register(registerCodeType));
             }
-            var programCounter = new Register(RegisterCodeType.PC, 0);
-            var currentProgramStatus = new Register(RegisterCodeType.CPSR, 0);
+            
+            Registers.Add(Register.LR);
 
-            Registers.Add(new Register(RegisterCodeType.LR, 0));
+            Registers.Add(Register.PC);
+            Registers.Add(Register.CPSR);
+            Registers.Add(Register.SP);
 
-            Registers.Add(programCounter);
-            Registers.Add(currentProgramStatus);
+            CurrentProgramStatus = Register.CPSR;
 
-            CurrentProgramStatus = currentProgramStatus;
-
-            programCounter.Value = (byte)MemorySectionOffset.TextRegionOffset;
-            ProgramCounter = programCounter;
+            Register.PC.Value = (int)MemorySectionOffset.TextRegionOffset;
+            Register.SP.Value = (int)MemorySectionOffset.StackRegionOffset;
+            
+            ProgramCounter = Register.PC;
         }
     }
 }
