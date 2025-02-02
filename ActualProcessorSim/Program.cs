@@ -9,17 +9,14 @@ namespace ActualProcessorSim;
 
 internal class Program
 {
-	static void Main(string[] args)
+	static void Main()
 	{
 		var assembler = new Assembler();
         var memoryBuilder = new MemoryBuilder();
 		assembler.Read();
 
-		var memory = new RamMemory
-		{
-			Content = assembler.BytesBuilder.Bytes
-		};
-		
+		var memory = new RamMemory(assembler.BytesBuilder);	
+
         memoryBuilder.Link(assembler.LineInformations!, memory);
 
 		var processor = new Processor();
@@ -28,6 +25,7 @@ internal class Program
 			Processor = processor,
 			Memory = memory
 		};
+
         computer.Execute();
 	}
 }

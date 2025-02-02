@@ -7,7 +7,7 @@ public class Assembler
 	private const string InstructionsPath = "ActualProcessorSim.InstructionsToExecute.txt";
 
 	private readonly InstructionLineResolver _instructionLineResolver = new();
-	public readonly BytesBuilderList BytesBuilder = new();
+	public readonly BytesBuilder BytesBuilder = new();
 
     public List<InstructionLineInformation>? LineInformations;
 

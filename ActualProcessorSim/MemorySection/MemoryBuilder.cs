@@ -50,11 +50,11 @@ public class MemoryBuilder
         foreach(var (parsedJumpIndex, memoryIndex) in jumpData)
         {
             var lineInformation = lineInformations[memoryIndex];
-            var position = lineInformation.Position;
+            var jmpArgumentPosition = lineInformation.Position + 1;
 
             var jmpLineInformation = lineInformations[parsedJumpIndex];
             var jmpPosition = jmpLineInformation.Position;
-            memory.Content[position + 1] = (byte)jmpPosition;
+            memory.Content[jmpArgumentPosition] = (byte)jmpPosition;
         }
     }
 

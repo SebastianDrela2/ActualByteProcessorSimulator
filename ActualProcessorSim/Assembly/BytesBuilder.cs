@@ -8,9 +8,10 @@ using ProcessorSim.Instructions;
 
 namespace ActualProcessorSim.Assembly;
 
-public class BytesBuilderList(ImmutableArray<byte> bytes) : IReadOnlyList<byte>
+public class BytesBuilder(ImmutableArray<byte> bytes) : IReadOnlyList<byte>
 {
-    public ImmutableArray<byte>.Builder Bytes { get; } = bytes.ToBuilder();
+    private ImmutableArray<byte>.Builder Bytes { get; } = bytes.ToBuilder();
+
     public int Position => Bytes.Count;
 
     public int Count => throw new NotImplementedException();
@@ -18,8 +19,13 @@ public class BytesBuilderList(ImmutableArray<byte> bytes) : IReadOnlyList<byte>
     public byte this[int index] => Bytes[index];
     public ReadOnlySubView<byte> this[Range range] => Bytes.SubList(range);
 
-    public BytesBuilderList()
+    public BytesBuilder()
         : this([]) { }
+
+    public void CopyTo(byte[] array, int index = 0)
+    {
+       Bytes.CopyTo(array, index);
+    }
 
     public int Write(Instruction instruction, LineInformation lineInformation)
     {
