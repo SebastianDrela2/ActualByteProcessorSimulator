@@ -5,7 +5,7 @@ namespace ActualProcessorSim.Intefacess;
 
 public interface IInstruction
 {
-	OpCodeType OpCode { get; }
+    OpCodeType OpCode { get; }
 
-	IReadOnlyList<ArgumentType> Arguments { get; }
+    IReadOnlyList<ArgumentType> Arguments { get; }
 }

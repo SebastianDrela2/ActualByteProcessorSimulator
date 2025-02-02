@@ -24,13 +24,13 @@ public class BytesBuilder(ImmutableArray<byte> bytes) : IReadOnlyList<byte>
 
     public void CopyTo(byte[] array, int index = 0)
     {
-       Bytes.CopyTo(array, index);
+        Bytes.CopyTo(array, index);
     }
 
     public int Write(Instruction instruction, LineInformation lineInformation)
     {
         int sum = Write(lineInformation.OpCode);
-		
+
         foreach (var (argType, argText) in instruction.Arguments.Zip(lineInformation.SegmentedLines.Skip(1)))
         {
             sum += WriteArgument(argText, argType);
@@ -97,10 +97,10 @@ public class BytesBuilder(ImmutableArray<byte> bytes) : IReadOnlyList<byte>
     IEnumerator IEnumerable.GetEnumerator() => Bytes.GetEnumerator();
 
     public bool TryParse(ReadOnlySpan<char> register, out RegisterCodeType value) => EnumParser.TryParse(register, out value);
-    public class InvalidSyntaxException(string message) : Exception(message) 
+    public class InvalidSyntaxException(string message) : Exception(message)
     {
         public static InvalidSyntaxException Create(string message) => new(message);
-        
+
         [DoesNotReturn]
         public static void Throw(string message) => throw Create(message);
         public static void ThrowIfFalse([DoesNotReturnIf(false)] bool value, string message)

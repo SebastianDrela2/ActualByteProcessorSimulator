@@ -10,7 +10,7 @@ public class InstructionExecutor(Computer computer)
     private readonly ByteDecoder _byteDecoder = new ByteDecoder(computer.Processor);
 
     public ExecuteInformation Execute(OpCodeType opCode)
-    {       
+    {
         return opCode switch
         {
             OpCodeType.MOV => ExecuteMov(),
@@ -183,5 +183,5 @@ public class InstructionExecutor(Computer computer)
     private static ExecuteInformation SuccessJumpedPerformedResult() => new ExecuteInformation(ExecuteStatus.Success, null, JumpedPerformed: true);
 
     private static ExecuteInformation InvalidContextResult(InstructionContext context) =>
-        new ExecuteInformation(ExecuteStatus.Failure,  new ArgumentException($"Invalid context switch: {context}"));
+        new ExecuteInformation(ExecuteStatus.Failure, new ArgumentException($"Invalid context switch: {context}"));
 }

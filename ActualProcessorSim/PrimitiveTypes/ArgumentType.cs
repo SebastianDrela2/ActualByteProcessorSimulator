@@ -2,7 +2,7 @@
 
 public enum ArgumentType
 {
-	Register,
-	Literal,
-	Address,
+    Register,
+    Literal,
+    Address,
 }

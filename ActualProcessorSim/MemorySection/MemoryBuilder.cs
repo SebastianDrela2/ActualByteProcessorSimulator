@@ -33,21 +33,21 @@ public class MemoryBuilder
         .Select(x =>
         (
             ParsedJumpIndex: int.Parse(x.lineInfo.Instruction.Split(' ')[1]),
-            MemoryIndex: x.index 
+            MemoryIndex: x.index
         ))
         .ToList();
 
         TransformJmpIndexesIntoMemoryAdress(jumpData, lineInformations, memory);
 
-    } 
+    }
 
     private void TransformJmpIndexesIntoMemoryAdress(
-        List<(int ParsedJumpIndex, int MemoryIndex)> jumpData, 
-        List<InstructionLineInformation> lineInformations, 
+        List<(int ParsedJumpIndex, int MemoryIndex)> jumpData,
+        List<InstructionLineInformation> lineInformations,
         RamMemory memory
     )
     {
-        foreach(var (parsedJumpIndex, memoryIndex) in jumpData)
+        foreach (var (parsedJumpIndex, memoryIndex) in jumpData)
         {
             var lineInformation = lineInformations[memoryIndex];
             var jmpArgumentPosition = lineInformation.Position + 1;

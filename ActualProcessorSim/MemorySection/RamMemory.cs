@@ -5,7 +5,7 @@ namespace ActualProcessorSim.MemorySection;
 public class RamMemory
 {
     private const int RamLength = 8 << 20;
-    
+
     public byte[] Content;
 
     public byte this[int index] => Content[index];
