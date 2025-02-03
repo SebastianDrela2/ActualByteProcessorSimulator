@@ -9,6 +9,7 @@ namespace ActualProcessorSim.PhysicalComponent
         public readonly IList<Register> Registers;
 
         public Register ProgramCounter;
+        public Register StackPointer;
         public Register CurrentProgramStatus;
 
         public bool MoveNext;
@@ -25,7 +26,6 @@ namespace ActualProcessorSim.PhysicalComponent
             }
             
             Registers.Add(Register.LR);
-
             Registers.Add(Register.PC);
             Registers.Add(Register.CPSR);
             Registers.Add(Register.SP);
@@ -33,9 +33,10 @@ namespace ActualProcessorSim.PhysicalComponent
             CurrentProgramStatus = Register.CPSR;
 
             Register.PC.Value = (int)MemorySectionOffset.TextRegionOffset;
-            Register.SP.Value = (int)MemorySectionOffset.StackRegionOffset;
+            Register.SP.Value = (int)MemorySectionOffset.EndOffSet;
             
             ProgramCounter = Register.PC;
+            StackPointer = Register.SP;
         }
     }
 }

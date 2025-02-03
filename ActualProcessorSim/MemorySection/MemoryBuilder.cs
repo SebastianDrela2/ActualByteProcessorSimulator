@@ -2,6 +2,7 @@
 
 using ActualProcessorSim.Assembly;
 using ActualProcessorSim.MemorySection;
+using ActualProcessorSim.Types;
 
 namespace ActualProcessorSim.Memory;
 public class MemoryBuilder
@@ -24,6 +25,16 @@ public class MemoryBuilder
         {OpCodeType.CMP, 4},
         {OpCodeType.SWI, 4 },
     };
+
+    public static IEnumerable<(int Start, int Size)> GetInstructions(RamMemory ram, Range range)
+    {
+        var (i, n) = range.GetOffsetAndLength(ram.Count);
+        for(int end = i + n, size; i < end; i += size)
+        {
+            size = InstructionLengthDict[(OpCodeType)ram[i]];
+            yield return (i, size);
+        }
+    }
 
     public void Link(List<InstructionLineInformation> lineInformations, RamMemory memory)
     {

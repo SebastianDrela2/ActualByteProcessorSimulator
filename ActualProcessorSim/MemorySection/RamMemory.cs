@@ -4,15 +4,16 @@ namespace ActualProcessorSim.MemorySection;
 
 public class RamMemory
 {
-    private const int RamLength = 8 << 20;
+    public const int RamLength = 8 << 20;
 
     public byte[] Content;
 
     public int Count => RamLength;
 
-    public byte this[int index] => Content[index];
+    public ref byte this[int index] => ref Content[index];
 
     public ReadOnlyMemory<byte> Memory => Content.AsMemory();
+    public Span<byte> Span => Content.AsSpan();
 
     public RamMemory(BytesBuilder builder)
     {

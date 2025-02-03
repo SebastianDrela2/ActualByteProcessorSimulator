@@ -1,4 +1,6 @@
-﻿using ActualProcessorSim.PhysicalComponent;
+﻿using System.Buffers.Binary;
+using System.Runtime.InteropServices;
+using ActualProcessorSim.PhysicalComponent;
 using ActualProcessorSim.PrimitiveTypes;
 using ActualProcessorSim.Runtime;
 
@@ -67,10 +69,11 @@ public class InstructionExecutor(Computer computer)
         {
             return SuccessResult();
         }
+        var stackAdressPush = computer.Processor.ProgramCounter.Value + 6;
+        Push(stackAdressPush);
 
         var value = _byteDecoder.DecodeValues(_bytes[1..5]);
         computer.Processor.ProgramCounter.Value = value;
-
 
         return SuccessJumpedPerformedResult();
     }
@@ -80,7 +83,6 @@ public class InstructionExecutor(Computer computer)
     private ExecuteInformation ExecuteBgt() => ExecuteBranch(ProgramStatus.Greater);
     private ExecuteInformation ExecuteBle() => ExecuteBranch(ProgramStatus.LessOrEqual);
     private ExecuteInformation ExecuteBlt() => ExecuteBranch(ProgramStatus.Less);
-
 
     private ExecuteInformation ExecuteMov()
     {
@@ -162,6 +164,7 @@ public class InstructionExecutor(Computer computer)
             return InvalidContextResult(contextSwitch);
         }
 
+        Pop();
         return SuccessResult();
     }
 
@@ -186,13 +189,15 @@ public class InstructionExecutor(Computer computer)
     private static ExecuteInformation InvalidContextResult(InstructionContext context) =>
         new ExecuteInformation(ExecuteStatus.Failure, new ArgumentException($"Invalid context switch: {context}"));
 
-    // private void Push(byte chunk)
-    // {
-    //     computer.Memory[computer.Processor.]
-    // }
+    private void Push(Int32 value)
+    {
+        computer.Processor.StackPointer.Value -= sizeof(Int32);
+        var memory = computer.GetOffsettedStackMemory();
+        BinaryPrimitives.WriteInt32LittleEndian(memory.Span, value);     
+    }
 
-    // private void Pop()
-    // {
-
-    // }
+    private void Pop()
+    {
+        computer.Processor.StackPointer.Value += sizeof(Int32);
+    }
 }

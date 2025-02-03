@@ -20,12 +20,13 @@ internal class Program
         memoryBuilder.Link(assembler.LineInformations!, memory);
 
         var processor = new Processor();
-        var computer = new Computer()
+        var computer = new Computer(assembler.LineInformations![^1])
         {
             Processor = processor,
             Memory = memory
         };
 
+        computer.DisplayFullMemory();
         computer.Execute();
     }
 }
