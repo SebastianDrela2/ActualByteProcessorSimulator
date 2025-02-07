@@ -23,7 +23,7 @@ public class BltInstruction(ArgumentType address)
 { }
 
 public class ExitInstruction()
-    : Instruction(OpCodeType.EXIT, []), IBreakControlFlowInstruction
+    : Instruction(OpCodeType.RET, []), IBreakControlFlowInstruction
 { }
 
 public class EndInstruction()

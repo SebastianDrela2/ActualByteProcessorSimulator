@@ -36,7 +36,7 @@ public class Assembler
             OpCodeType.MUL => InstructionsCr.Mul(lineInformation),
             OpCodeType.LS => InstructionsCr.Ls(lineInformation),
             OpCodeType.RS => InstructionsCr.Rs(lineInformation),
-            OpCodeType.EXIT => InstructionsCr.Exit(lineInformation),
+            OpCodeType.RET => InstructionsCr.Ret(lineInformation),
             OpCodeType.BLA => InstructionsCr.Bla(lineInformation),
             OpCodeType.BGE => InstructionsCr.Bge(lineInformation),
             OpCodeType.BGT => InstructionsCr.Bgt(lineInformation),

@@ -1,7 +1,12 @@
 ﻿MOV r1 #5
 ADD r1 #5
 SUB r1 #0
+
 BLA label
+ADD r1 #8
+MUL r2 #3
+END
+
 label:
 ADD r1 #3
-END
+RET

@@ -1,5 +1,5 @@
 ﻿using System.Buffers.Binary;
-using System.Runtime.InteropServices;
+using ActualProcessorSim.Memory;
 using ActualProcessorSim.PhysicalComponent;
 using ActualProcessorSim.PrimitiveTypes;
 using ActualProcessorSim.Runtime;
@@ -21,7 +21,7 @@ public class InstructionExecutor(Computer computer)
             OpCodeType.MUL => ExecuteMul(),
             OpCodeType.LS => ExecuteLs(),
             OpCodeType.RS => ExecuteRs(),
-            OpCodeType.EXIT => ExecuteExit(),
+            OpCodeType.RET => ExecuteRet(),
             OpCodeType.BLA => ExecuteBla(),
             OpCodeType.BGE => ExecuteBge(),
             OpCodeType.BGT => ExecuteBgt(),
@@ -69,7 +69,7 @@ public class InstructionExecutor(Computer computer)
         {
             return SuccessResult();
         }
-        var stackAdressPush = computer.Processor.ProgramCounter.Value + 6;
+        var stackAdressPush = computer.Processor.ProgramCounter.Value + MemoryBuilder.InstructionLengthDict[(OpCodeType)_bytes[0]];
         Push(stackAdressPush);
 
         var value = _byteDecoder.DecodeValues(_bytes[1..5]);
@@ -155,17 +155,19 @@ public class InstructionExecutor(Computer computer)
         };
     }
 
-    private ExecuteInformation ExecuteExit()
+    private ExecuteInformation ExecuteRet()
     {
-        var contextSwitch = (InstructionContext)_bytes[3];
+        var contextSwitch = (InstructionContext)_bytes[1];
 
-        if (contextSwitch is not InstructionContext.RegisterToValue)
+        if (contextSwitch is not InstructionContext.BreakControlFlow)
         {
             return InvalidContextResult(contextSwitch);
         }
 
+        Jump();
         Pop();
-        return SuccessResult();
+
+        return SuccessJumpedPerformedResult();
     }
 
     private ExecuteInformation ExecuteEnd()
@@ -199,5 +201,10 @@ public class InstructionExecutor(Computer computer)
     private void Pop()
     {
         computer.Processor.StackPointer.Value += sizeof(Int32);
+    }
+
+    private void Jump()
+    {
+        computer.Processor.ProgramCounter.Value = computer.Memory[computer.Processor.StackPointer.Value];
     }
 }

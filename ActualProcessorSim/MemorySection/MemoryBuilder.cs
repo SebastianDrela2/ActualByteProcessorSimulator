@@ -15,15 +15,15 @@ public class MemoryBuilder
         {OpCodeType.MUL, 4},
         {OpCodeType.LS, 4},
         {OpCodeType.RS, 4},
-        {OpCodeType.EXIT, 2},
-        {OpCodeType.BLA, 7},
-        {OpCodeType.BGE, 7},
-        {OpCodeType.BGT, 7},
-        {OpCodeType.BLE, 7},
-        {OpCodeType.BLT, 7},
+        {OpCodeType.BLA, 6},
+        {OpCodeType.BGE, 6},
+        {OpCodeType.BGT, 6},
+        {OpCodeType.BLE, 6},
+        {OpCodeType.BLT, 6},
         {OpCodeType.END, 2},
+        {OpCodeType.RET, 2},
         {OpCodeType.CMP, 4},
-        {OpCodeType.SWI, 4 },
+        {OpCodeType.SWI, 4},
     };
 
     public static IEnumerable<(int Start, int Size)> GetInstructions(RamMemory ram, Range range)

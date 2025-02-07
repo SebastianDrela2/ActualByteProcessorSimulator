@@ -26,7 +26,7 @@ internal class Program
             Memory = memory
         };
 
-        computer.DisplayFullMemory();
+        computer.SetFullMemoryDisplay();;
         computer.Execute();
     }
 }

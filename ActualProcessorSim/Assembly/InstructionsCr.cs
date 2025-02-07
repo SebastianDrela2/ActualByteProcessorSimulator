@@ -41,7 +41,7 @@ public static class InstructionsCr
         _ => throw new ArgumentException("Invalid arguements."),
     };
 
-    public static ExitInstruction Exit(LineInformation lineInformation) => lineInformation switch
+    public static ExitInstruction Ret(LineInformation lineInformation) => lineInformation switch
     {
         { IsOpCodeBasedOnly: true } => new ExitInstruction(),
         _ => throw new ArgumentException("Invalid arguements."),
